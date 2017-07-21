@@ -2,7 +2,8 @@
 const discord = require("discord.js");
 const requireDir = require('require-dir');
 const botCmd = requireDir("./commands", { recurse: true });
-const parseOptions = require("./parser.js")
+const parseOptions = require("./parser.js");
+const updateServerCount = require("./serverCount.js");
 const settings = require("./settings.json");
 const tokens = require("./tokens.json");
 
@@ -22,9 +23,19 @@ client
   .on("ready", () => {
     console.log(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
     client.user.setGame(`ASCII help`);
+    //updates server count on startup
+    updateServerCount(client.guilds.size, client.user.id);
   })
   .on("disconnect", () => { console.warn("Disconnected!"); })
   .on("reconnecting", () => { console.warn("Reconnecting..."); })
+  .on("guildCreate", (guild) => {
+    console.log(`ASCII bot has been added to the guild ${guild.name}`);
+    updateServerCount(client.guilds.size, client.user.id);
+  })
+  .on("guildDelete", (guild) => {
+    console.log(`ASCII bot has been removed from the guild ${guild.name}`);
+    updateServerCount(client.guilds.size, client.user.id);
+  })
   .on("message", (message) => {
     //ignore bots (and itself)
     if (message.author.bot) return;
