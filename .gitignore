@@ -1,0 +1,11 @@
+# Dependencies directory
+node_modules/
+
+# Error log
+errors.log
+
+# Tokens
+tokens.json
+
+# Visual Studio Code
+.vscode/
