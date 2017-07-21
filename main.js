@@ -55,7 +55,7 @@ client
         if (attachment.url.endsWith(".jpg") || attachment.url.endsWith(".jpeg") || attachment.url.endsWith(".png")) {
           botCmd.ASCII.image.run(message, {text: attachment.url}, client);
         } else {
-          message.reply(`File: ${attachment.filename}; ${attachment.filename.split(".").last()} is not a supported format`).catch((err) => {
+          message.reply(`File: \`${attachment.filename}\`; \`${attachment.filename.split(".").last()}\` is not a supported format`).catch((err) => {
             //ignore permission errors
             if (err.code === 50013 || err.message === "Missing Permissions") return;
             //log the error
