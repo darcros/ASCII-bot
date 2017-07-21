@@ -1,4 +1,5 @@
 const request = require("superagent");
+const settings = require("./settings.json");
 const logErr = require("./errorLogger.js");
 const tokens = require("./tokens.json");
 
@@ -14,6 +15,10 @@ let lists = {
 }
 
 module.exports = function updateServerCounts(count, id) {
+  if (!settings.updateServerCounts) {
+    console.log("Server count update is disabled in the setting");
+    return;
+  }
   console.log("Updating server counts...");
   //for each botlist
   for (let listName in lists) {
