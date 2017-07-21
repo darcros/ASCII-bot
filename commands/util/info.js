@@ -29,7 +29,7 @@ function getUptime(client) {
 module.exports.run = async function (message, args, client) {
   message.reply(`
 Uptime:\`${getUptime(client)}\`
-Servers:\`${client.guilds.keyArray().length}\`
+Servers:\`${client.guilds.size}\`
 Invite ${client.user.username} to your server: <https://goo.gl/KT4Zrk>
 Join the ${client.user.username} support server: <https://discord.gg/nE3uaSW>
 `).catch((err) => {
