@@ -44,11 +44,34 @@ client
     let isCmd = cmdTest(message, message.content);
     if (!isCmd.isCmd) return;
 
+    let alreadyRan = false;
+    //check if message has attached images
+    if (message.attachments.size > 0) {
+      message.attachments.forEach((attachment) => {
+        //if the attachment is an image
+        if (!attachment.width || !attachment.height) return;
+        alreadyRan = true;
+        //if the attachment is in a supported format
+        if (attachment.url.endsWith(".jpg") || attachment.url.endsWith(".jpeg") || attachment.url.endsWith(".png")) {
+          botCmd.ASCII.image.run(message, {text: attachment.url}, client);
+        } else {
+          message.reply(`File: ${attachment.filename}; ${attachment.filename.split(".").last()} is not a supported format`).catch((err) => {
+            //ignore permission errors
+            if (err.code === 50013 || err.message === "Missing Permissions") return;
+            //log the error
+            console.error(err);
+            logErr(err);
+          });
+        }
+      });
+    }
+
     //get args for getCmd() funct
     let strNoPrefix = message.content.substring(isCmd.cutfrom); //this could be moved in getName()
     let foundCmdName = getName(strNoPrefix);
     //if there is no command
     if (foundCmdName === undefined) {
+      if (alreadyRan) return;
       message.reply("Please specify a command.\nUse `help` to get a list of all the commands.").catch((err) => {
         //ignore permission errors
         if (err.code === 50013 || err.message === "Missing Permissions") return;
@@ -63,6 +86,7 @@ client
 
     //give error if command is not found
     if (gotCmd.category === "notFound" || gotCmd.command === "notFound") {
+      if (alreadyRan) return;
       message.reply("Error: command not found.\nUse `help` to get a list of all the commands.").catch((err) => {
         //ignore permission errors
         if (err.code === 50013 || err.message === "Missing Permissions") return;
@@ -167,3 +191,8 @@ function cmdTest(message, msgContent) {
     }
   }
 }
+
+//adds .last method to array
+Array.prototype.last = function () {
+  return this[this.length - 1];
+};
