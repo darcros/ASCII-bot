@@ -53,6 +53,7 @@ client
         alreadyRan = true;
         //if the attachment is in a supported format
         if (attachment.url.endsWith(".jpg") || attachment.url.endsWith(".jpeg") || attachment.url.endsWith(".png")) {
+          console.log("running ASCII:image directly");
           botCmd.ASCII.image.run(message, {text: attachment.url}, client);
         } else {
           message.reply(`File: \`${attachment.filename}\`; \`${attachment.filename.split(".").last()}\` is not a supported format`).catch((err) => {
