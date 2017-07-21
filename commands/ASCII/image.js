@@ -77,23 +77,7 @@ module.exports.run = async function (message, args, client) {
 
     //if rendered is too big
     if (rendered.length > 2000) {
-      message.channel.send("This image is too big so it has been split in more messages.").then(() => {
-        message.channel.send(`\`\`\`${rendered}\`\`\``, { split: true }).catch((err) => {
-          //ignore permission errors
-          if (err.code === 50013 || err.message === "Missing Permissions") return;
-          //log the error
-          console.error(err);
-          logErr(err);
-        });
-      }).catch((err) => {
-        //ignore permission errors
-        if (err.code === 50013 || err.message === "Missing Permissions") return;
-        //log the error
-        console.error(err);
-        logErr(err);
-      })
-    } else {
-      message.channel.send(`\`\`\`${rendered}\`\`\``).catch((err) => {
+      message.channel.send("This image is too big so it has been split in more messages.").catch((err) => {
         //ignore permission errors
         if (err.code === 50013 || err.message === "Missing Permissions") return;
         //log the error
@@ -101,5 +85,15 @@ module.exports.run = async function (message, args, client) {
         logErr(err);
       });
     }
+    message.channel.send(rendered, {
+      split: true,
+      code: true
+    }).catch((err) => {
+      //ignore permission errors
+      if (err.code === 50013 || err.message === "Missing Permissions") return;
+      //log the error
+      console.error(err);
+      logErr(err);
+    });
   });
 }
