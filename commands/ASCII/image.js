@@ -34,16 +34,7 @@ module.exports.run = async function (message, args, client) {
     });
     return;
   } else if (!isUrl(args.text)) { //check if is url
-    message.reply(`\`${args.text}\` is not an URLUse \`help image\` to get help about syntax and options.`).catch((err) => {
-      //ignore permission errors
-      if (err.code === 50013 || err.message === "Missing Permissions") return;
-      //log the error
-      console.error(err);
-      logErr(err);
-    });
-    return;
-  } else if (!(args.text.endsWith(".jpg") || args.text.endsWith(".jpeg") || args.text.endsWith(".png"))) {
-    message.reply("An error occured, either because the image format is not supported or because you used a redirect/shortened link.\n The supported formats are: `.jpg`/`.jpeg`, `.png`").catch((err) => {
+    message.reply(`\`${args.text}\` is not an URL (remember to write \`https://\`/\`http://\`). Use \`help image\` to get help about syntax and options.`).catch((err) => {
       //ignore permission errors
       if (err.code === 50013 || err.message === "Missing Permissions") return;
       //log the error
@@ -52,7 +43,7 @@ module.exports.run = async function (message, args, client) {
     });
     return;
   }
-
+  
   imageToAscii(args.text, {
     pxWidth: 2,
     size: {
@@ -71,6 +62,17 @@ module.exports.run = async function (message, args, client) {
     reverse: args.reverse !== undefined ? !args.reverse : true
   }, (err, rendered) => {
     if (err) {
+      //if there is no rendered then the URL was not a valid iamge
+    if (rendered === undefined) {
+      message.reply("An error occured, either because the image format is not supported or because you used a redirect/shortened link.\n The supported formats are: `.jpg`/`.jpeg`, `.png`").catch((err) => {
+        //ignore permission errors
+        if (err.code === 50013 || err.message === "Missing Permissions") return;
+        //log the error
+        console.error(err);
+        logErr(err);
+      });
+      return;
+    }
       console.error(err);
       logErr(err);
     }
