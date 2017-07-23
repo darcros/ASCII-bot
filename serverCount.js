@@ -23,21 +23,25 @@ module.exports = function updateServerCounts(count, id) {
   //for each botlist
   for (let listName in lists) {
     let list = lists[listName];
-    //put the botID in the token
-    let url = list.url.replace(":id", id);
-    //post the server count
-    request.post(url)
-      .set('Authorization', list.token)
-      .send({ server_count: count })
-      .end((err, res) => {
-        if (err) {
-          console.error(`Could not update ${listName}`, err);
-          logErr(err);
-          return;
-        }
-        console.log("Response:", res.body);
-        console.log(`Server count on ${listName} updated.`)
-      });
-    console.log("Server count update finished.");
+    if (list.token !== ("" && undefined)) {
+      //put the botID in the url
+      let url = list.url.replace(":id", id);
+      //post the server count
+      request.post(url)
+        .set('Authorization', list.token)
+        .send({ server_count: count })
+        .end((err, res) => {
+          if (err) {
+            console.error(`Could not update ${listName}`, err);
+            logErr(err);
+            return;
+          }
+          console.log("Response:", res.body);
+          console.log(`Server count on ${listName} updated.`)
+        });
+    } else {
+      console.error(`No token for ${listName}`);
+    }
   }
+  console.log("Server count update finished.");
 }
