@@ -18,7 +18,8 @@ module.exports.args = {
 
 module.exports.info = {
   description: "This command generates ASCII art from images.",
-  textName: "URL"
+  textName: "URL",
+  note: "This command can be ran on images atached to messages by tagging `ASCII#9369` or wrting `ASCII` in the comment.\nActually any ASCII command in the comment would trigger the conversion of the attached images an would then be executed)"
 }
 
 module.exports.run = async function (message, args, client) {

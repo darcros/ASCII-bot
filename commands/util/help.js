@@ -31,11 +31,14 @@ module.exports.run = async function (message, args, client, botCmd) {
 
   //if text is empty or only spaces give command list
   if (args.text.length === 0 || args.text.search(/^ +$/gi) !== -1) { //check if is empty or only contains spaces
-    let defaultHelp = `To run a command in any server, use @${client.user.username}#${client.user.discriminator} command or ${settings.prefix} command. For example, @${client.user.username}#${client.user.discriminator} help.
-To run a command in this DM, simply use command with no prefix.
+    let defaultHelp = `To run a command in any server, use \`@${client.user.username}#${client.user.discriminator} command\` or \`${settings.prefix} command\`. For example, \`@${client.user.username}#${client.user.discriminator} help\`.
+To run a command in this DM, simply use \`command\` with no prefix.
 
 Use help <command> to view detailed information about a specific command.
 Use help without arguments to get a list of commands.
+
+**NOTE**: using a command in the comment of an attached file will run the command and the convert the attached images.
+If you only want to convert the images you can just mention \`@${client.user.username}#${client.user.discriminator}\` or type \`${settings.prefix}\`
 `
     let listHeader = "AVAIABLE COMMANDS:"
     let list = getCmdList(botCmd);
@@ -70,7 +73,9 @@ Use help without arguments to get a list of commands.
   let syntax = getSyntax(botCmd[gotCmd.category][gotCmd.command], gotCmd.command);
   //get aliases
   let aliases = "**Aliases:** " + botCmd[gotCmd.category][gotCmd.command].cmdNames;
-  message.author.send([`__**COMMAND:**: ${gotCmd.command}__\n`, syntax, aliases], { split: true }).catch((err) => {
+  let note = botCmd[gotCmd.category][gotCmd.command].info.hasOwnProperty("note") ? "**NOTE**:" + botCmd[gotCmd.category][gotCmd.command].info.note : "";
+  let toSend = [`__**COMMAND:**: ${gotCmd.command}__\n`, syntax, aliases + "\n", note];
+  message.author.send(toSend, { split: true }).catch((err) => {
     //ignore permission errors
     if (err.code === 50013 || err.message === "Missing Permissions") return;
     //log the error
