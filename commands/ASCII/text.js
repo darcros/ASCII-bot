@@ -175,6 +175,7 @@ module.exports.run = async function (message, args, client) {
         console.error(err);
         logErr(err);
       });
+      return;
     }
     message.channel.send(rendered).catch((err) => {
       //ignore permission errors
