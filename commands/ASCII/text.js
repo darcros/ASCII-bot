@@ -167,6 +167,15 @@ module.exports.run = async function (message, args, client) {
           return;
       }
     }
+    if (rendered.length > 2000) {
+      message.channel.send("The output is longer than 2000 characters and Discord won't allow messages that long.\nAnyways it would have never fitted the screen, so try splitting your message across more commands.").catch((err) => {
+        //ignore permission errors
+        if (err.code === 50013 || err.message === "Missing Permissions") return;
+        //log the error
+        console.error(err);
+        logErr(err);
+      });
+    }
     message.channel.send(rendered).catch((err) => {
       //ignore permission errors
       if (err.code === 50013 || err.message === "Missing Permissions") return;
