@@ -161,7 +161,7 @@ function getName(strNoPrefix) {
 
 
 function cmdTest(message, msgContent) {
-  const cmdRegex = new RegExp(`^(${settings.prefix}|<@${client.user.id}>)`, "i");
+  const cmdRegex = new RegExp(`^(${settings.prefix}|<@!?${client.user.id}>)`, "i");
   //if message is from dm it's certainly a command
   if (message.channel.type === "dm") {
     //if message ha prefix handle like regular command
