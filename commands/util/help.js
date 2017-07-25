@@ -37,7 +37,7 @@ To run a command in this DM, simply use \`command\` with no prefix.
 Use help <command> to view detailed information about a specific command.
 Use help without arguments to get a list of commands.
 
-**NOTE**: using a command in the comment of an attached file will run the command and the convert the attached images.
+**NOTE**: using a command in the comment of an attached file will run the command and then convert the attached images.
 If you only want to convert the images you can just mention \`@${client.user.username}#${client.user.discriminator}\` or type \`${settings.prefix}\`
 `
     let listHeader = "AVAIABLE COMMANDS:"
