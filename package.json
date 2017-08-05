@@ -8,6 +8,13 @@
   },
   "author": "Dario Crosa (7ixi0)",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/7ixi0/ASCII-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/7ixi0/ASCII-bot/issues"
+  },
   "dependencies": {
     "discord.js": "^11.1.0",
     "figlet": "^1.2.0",
